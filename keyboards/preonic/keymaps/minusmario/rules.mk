@@ -1,4 +1,5 @@
 SRC += muse.c #音乐
+AUDIO_ENABLE = yes
 DYNAMIC_MACRO_ENABLE = yes # 动态宏
 LEADER_ENABLE = yes # leader key
 RGBLIGHT_ENABLE = yes # RGB底灯
