@@ -116,6 +116,9 @@
 
 #define TERMINAL_SOUND E__NOTE(_C5)
 
+// added by MinusMario
+#define GAME_ON E__NOTE(_C6),E__NOTE(_E6),E__NOTE(_G6)
+#define GAME_OFF E__NOTE(_E6),E__NOTE(_D6),E__NOTE(_C6)
 /* Title:            La Campanella
  * Author/Composer:  Frank Lizst
  * License:          Public Domain
