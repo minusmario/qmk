@@ -230,7 +230,7 @@ void matrix_scan_user(void) {
         }
     }
 #endif
-    if (timer_elapsed(double_tap_timer) > 100) {
+    if (timer_elapsed(double_tap_timer) > 125) {
         double_tap_timer = 0;
     }
 }
