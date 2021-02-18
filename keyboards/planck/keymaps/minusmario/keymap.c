@@ -41,45 +41,59 @@ enum planck_keycodes {
   MARCO_VIM_FIND,
   ALT_TAB
 };
+// Tap-Dance
+enum {
+    COMMA_DOT,
+};
+// Tap Dance definitions
+qk_tap_dance_action_t tap_dance_actions[] = {
+    // Tap once for Escape, twice for Caps Lock
+    [COMMA_DOT] = ACTION_TAP_DANCE_DOUBLE(KC_COMMA, KC_DOT),
+};
 
 #define LOWER MO(_LOWER)
 #define RAISE MO(_RAISE)
 #define FN MO(_FN)
 
+#ifdef AUDIO_ENABLE
+float audio_caps_on[][2] = SONG(VIOLIN_SOUND);
+float audio_caps_off[][2] = SONG(GUITAR_SOUND);
+#endif
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_BASE] = LAYOUT_planck_mit(
-    KC_ESCAPE,      KC_Q,     KC_W,    KC_E,    KC_R,  KC_T,     KC_Y, KC_U,  KC_I,     KC_O,    KC_P,      KC_BSPACE,     \
-    LCTL_T(KC_TAB), KC_A,     KC_S,    KC_D,    KC_F,  KC_G,     KC_H, KC_J,  KC_K,     KC_L,    KC_SCOLON, KC_QUOTE,     \
-    KC_LSHIFT,      KC_Z,     KC_X,    KC_C,    KC_V,  KC_B,     KC_N, KC_M,  KC_COMMA, KC_DOT,  KC_SLASH,  RSFT_T(KC_ENTER), \
-    FN,             KC_LCTRL, KC_LGUI, KC_LALT, LOWER, KC_SPACE,       RAISE, KC_LEFT,  KC_DOWN, KC_UP,     KC_RIGHT
+    KC_ESCAPE,     KC_Q,    KC_W,   KC_E,   KC_R, KC_T,    KC_Y,KC_U, KC_I,    KC_O,   KC_P,     KC_BSPACE,     \
+    LCTL_T(KC_TAB),KC_A,    KC_S,   KC_D,   KC_F, KC_G,    KC_H,KC_J, KC_K,    KC_L,   KC_SCOLON,KC_QUOTE,     \
+    KC_LSHIFT,     KC_Z,    KC_X,   KC_C,   KC_V, KC_B,    KC_N,KC_M, KC_COMMA,KC_DOT, KC_SLASH, RSFT_T(KC_ENTER), \
+    FN,            KC_LCTRL,KC_LGUI,KC_LALT,LOWER,KC_SPACE,     RAISE,KC_LEFT, KC_DOWN,KC_UP,    KC_RIGHT
   ),
 
   [_LOWER] = LAYOUT_planck_mit(
-    RSFT(KC_GRAVE), RSFT(KC_1),     RSFT(KC_2),     RSFT(KC_3),     RSFT(KC_4),     RSFT(KC_5),  LSFT(KC_6), KC_7,           KC_8, KC_9,   LSFT(KC_9),        LSFT(KC_0), \
-    KC_TRANSPARENT, KC_F1,          KC_F2,          KC_F3,          KC_F4,          KC_F5,       KC_F6,      KC_4,           KC_5, KC_6,   KC_LBRACKET,       KC_RBRACKET, \
-    KC_TRANSPARENT, KC_F7,          KC_F8,          KC_F9,          KC_F10,         KC_F11,      KC_F12,     KC_1,           KC_2, KC_3,   LSFT(KC_LBRACKET), LSFT(KC_RBRACKET), \
-    KC_NO,          KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, ALT_TAB,                 KC_TRANSPARENT, KC_0, KC_DOT, KC_PLUS,           KC_MINUS
+    KC_TILD,KC_EXLM,KC_AT,  KC_HASH,KC_DLR, KC_PERC,KC_CIRC,KC_7,   KC_8,KC_9,         KC_LPRN,    KC_RPRN, \
+    KC_TRNS,KC_F1,  KC_F2,  KC_F3,  KC_F4,  KC_F5,  KC_F6,  KC_4,   KC_5,KC_6,         KC_LBRACKET,KC_RBRACKET, \
+    KC_TRNS,KC_F7,  KC_F8,  KC_F9,  KC_F10, KC_F11, KC_F12, KC_1,   KC_2,KC_3,         KC_LCBR,    KC_RCBR, \
+    KC_NO,  KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,        KC_TRNS,KC_0,TD(COMMA_DOT),KC_PLUS,    KC_MINUS
   ),
 
   [_RAISE] = LAYOUT_planck_mit(
-    KC_GRAVE,       KC_NO,           KC_NO,           KC_INSERT,      KC_HOME,        KC_PGUP,    KC_PAUSE,   LSFT(KC_7),     LSFT(KC_8),          LSFT(KC_MINUS),       LSFT(KC_EQUAL),      LSFT(KC_BSLASH), \
-    KC_TRANSPARENT, DYN_MACRO_PLAY1, DYN_MACRO_PLAY2, KC_DELETE,      KC_END,         KC_PGDOWN,  KC_LEFT,    KC_DOWN,        KC_UP,               KC_RIGHT,             KC_EQUAL,            KC_BSLASH, \
-    KC_TRANSPARENT, KC_MS_LEFT,      KC_MS_UP,        KC_MS_DOWN,     KC_MS_RIGHT,    KC_MS_BTN1, KC_MS_BTN2, KC_MINUS,       KC_PSCREEN,          KC_MEDIA_PREV_TRACK,  KC_MEDIA_NEXT_TRACK, KC_AUDIO_VOL_UP, \
-    KC_NO,          KC_TRANSPARENT,  KC_TRANSPARENT,  KC_TRANSPARENT, KC_TRANSPARENT, KC_CAPSLOCK,            KC_TRANSPARENT, LCTL(LGUI(KC_LEFT)), LCTL(LGUI(KC_RIGHT)), KC_MEDIA_PLAY_PAUSE, KC_AUDIO_VOL_DOWN
+    KC_GRAVE,KC_NLCK,        KC_SLCK,        KC_INSERT, KC_HOME,    KC_PGUP,    KC_PAUSE,  KC_AMPR, KC_ASTR,            KC_UNDS,             KC_PLUS,            KC_PIPE, \
+    KC_TRNS, DYN_MACRO_PLAY1,DYN_MACRO_PLAY2,KC_DELETE, KC_END,     KC_PGDOWN,  KC_LEFT,   KC_DOWN, KC_UP,              KC_RIGHT,            KC_EQUAL,           KC_BSLASH, \
+    KC_TRNS, KC_MS_LEFT,     KC_MS_UP,       KC_MS_DOWN,KC_MS_RIGHT,KC_MS_BTN1, KC_MS_BTN2,KC_MINUS,KC_PSCREEN,         KC_MEDIA_PREV_TRACK, KC_MEDIA_NEXT_TRACK,KC_AUDIO_VOL_UP, \
+    KC_NO,   KC_TRNS,        KC_TRNS,        KC_TRNS,   KC_TRNS,    KC_CAPSLOCK,           KC_TRNS, LCTL(LGUI(KC_LEFT)),LCTL(LGUI(KC_RIGHT)),KC_MEDIA_PLAY_PAUSE,KC_AUDIO_VOL_DOWN
   ),
 
   [_ADJUST] = LAYOUT_planck_mit(
-    LALT(LCTL(KC_DELETE)), DYN_REC_START1, DYN_REC_START2, KC_NO,          KC_NO,          KC_NO, KC_NO, MARCO_VIM_YANK, KC_NO,    KC_NO,   KC_NO,   KC_NO, \
-    KC_TRANSPARENT,        KC_NO,          KC_NO,          KC_NO,          MARCO_VIM_FIND, KC_NO, KC_NO, MARCO_VIM_PASTE,RGB_TOG,  RGB_VAI, RGB_VAD, MAGIC_TOGGLE_NKRO, \
-    KC_TRANSPARENT,        KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO, KC_NO, KC_NO,          RGB_MOD,  RGB_HUI, RGB_HUD, RESET, \
-    DYN_REC_STOP,          KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_NO,        KC_TRANSPARENT, RGB_RMOD, RGB_SAI, RGB_SAD, KC_NO
+    LALT(LCTL(KC_DELETE)),DYN_REC_START1,DYN_REC_START2,KC_NO,  KC_NO,         KC_NO,KC_NO,MARCO_VIM_YANK, KC_NO, KC_NO,KC_NO,KC_NO, \
+    KC_TRNS,              KC_NO,         KC_NO,         KC_NO,  MARCO_VIM_FIND,KC_NO,KC_NO,MARCO_VIM_PASTE,MU_TOG,KC_NO,KC_NO,MAGIC_TOGGLE_NKRO, \
+    KC_TRNS,              KC_NO,         KC_NO,         KC_NO,  KC_NO,         KC_NO,KC_NO,KC_NO,          MU_MOD,KC_NO,KC_NO,RESET, \
+    DYN_REC_STOP,         KC_TRNS,       KC_TRNS,       KC_TRNS,KC_TRNS,       KC_NO,      KC_TRNS,        KC_NO, KC_NO,KC_NO,KC_NO
   ),
 
   [_FN] = LAYOUT_planck_mit(
-  KC_DOT,        KC_1,    KC_2,  KC_3,   KC_4,   KC_5,    KC_PLUS,           KC_MINUS,KC_ASTERISK,KC_SLASH,      KC_LPRN,KC_RPRN,    \
-  KC_COMMA,      KC_6,    KC_7,  KC_8,   KC_9,   KC_0,    MARCO_VIM_PREVIOUS,KC_NO,   KC_NO,      MARCO_VIM_NEXT,KC_NO,  KC_BSPACE,  \
-  KC_SCOLON,     KC_QUOTE,KC_DQT,KC_LABK,KC_RABK,KC_NO,   KC_NO,             KC_NO,   KC_NO,      KC_NO,         KC_NO,  KC_NO,      \
-  KC_TRANSPARENT,KC_NO,   KC_NO, KC_NO,  KC_NO,  KC_SPACE,                   KC_NO,   KC_NO,      KC_NO,         KC_NO,  KC_NO
+  KC_TRNS,KC_7,   KC_8, KC_9,   KC_LPRN, KC_RPRN,KC_PLUS,           KC_MINUS,KC_ASTR,KC_SLASH,      KC_NO,  KC_NO,\
+  KC_TRNS,KC_4,   KC_5, KC_6,   KC_QUOTE,KC_DQT, MARCO_VIM_PREVIOUS,KC_NO,   KC_NO,  MARCO_VIM_NEXT,KC_NO,  KC_NO,\
+  KC_TRNS,KC_1,   KC_2, KC_3,   KC_COMMA,KC_DOT, KC_LT,             KC_GT,   KC_NO,  KC_NO,         KC_NO,  KC_NO,\
+  KC_TRNS,KC_TRNS,KC_0, KC_TRNS,KC_NO,   KC_SPACE,                  KC_NO,   KC_TRNS,KC_TRNS,       KC_TRNS,KC_TRNS
   ),
 };
 
@@ -173,8 +187,8 @@ void encoder_update(bool clockwise) {
 float lead_start[][2] = SONG(MARIO_THEME);
 float lead_succeed[][2] = SONG(LEAD_SUCCESS);
 float lead_fail[][2] = SONG(LEAD_FAIL);
-#endif*/
-LEADER_EXTERNS();
+#endif
+LEADER_EXTERNS();*/
 void matrix_scan_user(void) {
 #ifdef AUDIO_ENABLE
     if (muse_mode) {
@@ -257,3 +271,14 @@ if (did_leader_succeed) {
 #endif
   }
 }*/
+
+bool led_update_user(led_t led_state) {
+    #ifdef AUDIO_ENABLE
+    static uint8_t caps_state = 0;
+    if (caps_state != led_state.caps_lock) {
+        led_state.caps_lock ? PLAY_SONG(audio_caps_on) : PLAY_SONG(audio_caps_off);
+        caps_state = led_state.caps_lock;
+    }
+    #endif
+    return true;
+}
