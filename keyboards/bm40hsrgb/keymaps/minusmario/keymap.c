@@ -59,7 +59,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 };
 
-extern bool g_suspend_state;
 extern rgb_config_t rgb_matrix_config;
 
 uint32_t layer_state_set_user(uint32_t state) {
@@ -126,7 +125,6 @@ void set_layer_color(int layer) {
 }
 
 void rgb_matrix_indicators_user(void) {
-  if (g_suspend_state) { return; }
   switch (biton32(layer_state)) {
     case 1:
       set_layer_color(1);
@@ -207,7 +205,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
     }
     return true;
 }
+void suspend_power_down_user(void) {
+    rgb_matrix_set_suspend_state(true);
+}
 
+void suspend_wakeup_init_user(void) {
+    rgb_matrix_set_suspend_state(false);
+}
 // layer indicator
 /* const rgblight_segment_t PROGMEM layer_indi_lower[] = RGBLIGHT_LAYER_SEGMENTS(LOWER_LIGHTING);
 const rgblight_segment_t PROGMEM layer_indi_raise[] = RGBLIGHT_LAYER_SEGMENTS(RAISW_LIGHTING);
