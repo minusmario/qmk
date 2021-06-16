@@ -17,13 +17,12 @@
     {35+0, 1, hsv}
 #define SET_LAYER_ID(hsv)     \
     {0, 1, HSV_OVERRIDE_HELP(hsv, INDICATOR_BRIGHTNESS)}, \
-    {35+0, 1, HSV_OVERRIDE_HELP(hsv, INDICATOR_BRIGHTNESS)}, \
     {1, 6, hsv}, \
-    {35+1, 6, hsv}, \
+    {34+1, 6, hsv}, \
     {7, 4, hsv}, \
-    {35+ 7, 4, hsv}, \
+    {34+ 7, 4, hsv}, \
     {25, 2, hsv}, \
-    {35+ 25, 2, hsv}
+    {34+ 25, 2, hsv}
 
 
 enum sofle_layers {
@@ -196,7 +195,7 @@ const rgblight_segment_t PROGMEM layer_adjust_lights[] = RGBLIGHT_LAYER_SEGMENTS
     SET_LAYER_ID(HSV_GREEN)
 );
 const rgblight_segment_t PROGMEM layer_numpad_lights[] = RGBLIGHT_LAYER_SEGMENTS(
-    SET_LAYER_ID(HSV_ORANGE)
+    SET_LAYER_ID(HSV_PURPLE)
 );
 
 const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
@@ -338,11 +337,13 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
         switch (get_highest_layer(layer_state)) {
             case _QWERTY:
                 if (clockwise) {
-                    tap_code(KC_WH_D);
-                    tap_code(KC_WH_D);
+                    tap_code(KC_WH_U);
+                    tap_code(KC_WH_U);
+                    tap_code(KC_WH_U);
                 } else {
-                    tap_code(KC_WH_U);
-                    tap_code(KC_WH_U);
+                    tap_code(KC_WH_D);
+                    tap_code(KC_WH_D);
+                    tap_code(KC_WH_D);
                 }
                 break;
             case _LOWER:
@@ -354,11 +355,13 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
                 break;
             default:
                 if (clockwise) {
-                    tap_code(KC_WH_D);
-                    tap_code(KC_WH_D);
+                    tap_code(KC_WH_U);
+                    tap_code(KC_WH_U);
+                    tap_code(KC_WH_U);
                 } else {
-                    tap_code(KC_WH_U);
-                    tap_code(KC_WH_U);
+                    tap_code(KC_WH_D);
+                    tap_code(KC_WH_D);
+                    tap_code(KC_WH_D);
                 }
                 break;
         }
