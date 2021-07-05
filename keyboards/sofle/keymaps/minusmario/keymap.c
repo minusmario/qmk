@@ -13,17 +13,7 @@
 
 // Light combinations
 #define SET_INDICATORS(hsv) \
-    {0, 1, HSV_OVERRIDE_HELP(hsv, INDICATOR_BRIGHTNESS)}, \
-    {35+0, 1, hsv}
-#define SET_LAYER_ID(hsv)     \
-    {0, 1, HSV_OVERRIDE_HELP(hsv, INDICATOR_BRIGHTNESS)}, \
-    {1, 6, hsv}, \
-    {34+1, 6, hsv}, \
-    {7, 4, hsv}, \
-    {34+ 7, 4, hsv}, \
-    {25, 2, hsv}, \
-    {34+ 25, 2, hsv}
-
+    {0, 1, HSV_OVERRIDE_HELP(hsv, INDICATOR_BRIGHTNESS)}
 
 enum sofle_layers {
     _QWERTY = 0,
@@ -41,6 +31,9 @@ enum custom_keycodes {
     MARCO_VIM_PASTE,
     MARCO_VIM_FIND,
 };
+
+bool is_alt_tab_active = false;
+uint16_t alt_tab_timer = 0;
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /*
@@ -60,13 +53,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
   [_QWERTY] = LAYOUT(
   //,------------------------------------------------.                   ,---------------------------------------------------.
-  KC_ESC,       KC_1,KC_2,    KC_3,    KC_4,    KC_5,                      KC_6,    KC_7,   KC_8,    KC_9,    KC_0,    KC_BSPC,
+  KC_ESC,   KC_1, KC_2,    KC_3,    KC_4,    KC_5,                      KC_6,    KC_7,   KC_8,    KC_9,    KC_0,    KC_BSPC,
   //|------+-------+--------+--------+--------+------|                   |--------+-------+--------+--------+--------+---------|
-  KC_ESC,       KC_Q,KC_W,    KC_E,    KC_R,    KC_T,                      KC_Y,    KC_U,   KC_I,    KC_O,    KC_P,    KC_BSPC,
+  KC_TAB,   KC_Q, KC_W,    KC_E,    KC_R,    KC_T,                      KC_Y,    KC_U,   KC_I,    KC_O,    KC_P,    KC_BSPC,
   //|------+-------+--------+--------+--------+------|                   |--------+-------+--------+--------+--------+---------|
-  LCTL_T(KC_TAB),KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                      KC_H,    KC_J,   KC_K,    KC_L,    KC_SCLN, KC_QUOT,
+  KC_LCTRL, KC_A, KC_S,    KC_D,    KC_F,    KC_G,                      KC_H,    KC_J,   KC_K,    KC_L,    KC_SCLN, KC_QUOT,
   //|------+-------+--------+--------+--------+------|  ===  |   |  ===  |--------+-------+--------+--------+--------+---------|
-  KC_LSFT, KC_Z,   KC_X,    KC_C,    KC_V,    KC_B,  KC_MUTE,  LGUI(KC_L),KC_N,    KC_M,   KC_COMM, KC_DOT,  KC_SLSH, RSFT_T(KC_ENT),
+  KC_LSFT, KC_Z,   KC_X,    KC_C,    KC_V,    KC_B,  KC_MUTE,  LGUI(KC_L),KC_N,    KC_M,   KC_COMM, KC_DOT,  KC_SLSH,   KC_RSFT,
   //|------+-------+--------+--------+--------+------|  ===  |   |  ===  |--------+-------+--------+--------+--------+---------|
                   KC_LGUI, KC_LALT, KC_LOWER ,KC_SPC, MO(_NUMPAD),  KC_ENT, KC_SPC , KC_RAISE, KC_RALT, KC_RCTRL
   //            \--------+--------+--------+---------+-------|   |--------+---------+--------+---------+-------/
@@ -185,30 +178,35 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 #ifdef RGBLIGHT_ENABLE
 char layer_state_str[70];
 // Now define the array of layers. Later layers take precedence
+const rgblight_segment_t PROGMEM layer_base_lights[] = RGBLIGHT_LAYER_SEGMENTS(
+    SET_INDICATORS(HSV_CYAN)
+);
 const rgblight_segment_t PROGMEM layer_lower_lights[] = RGBLIGHT_LAYER_SEGMENTS(
-    SET_LAYER_ID(HSV_RED)
+    SET_INDICATORS(HSV_RED)
 );
 const rgblight_segment_t PROGMEM layer_raise_lights[] = RGBLIGHT_LAYER_SEGMENTS(
-    SET_LAYER_ID(HSV_YELLOW)
+    SET_INDICATORS(HSV_YELLOW)
 );
 const rgblight_segment_t PROGMEM layer_adjust_lights[] = RGBLIGHT_LAYER_SEGMENTS(
-    SET_LAYER_ID(HSV_GREEN)
+    SET_INDICATORS(HSV_GREEN)
 );
 const rgblight_segment_t PROGMEM layer_numpad_lights[] = RGBLIGHT_LAYER_SEGMENTS(
-    SET_LAYER_ID(HSV_PURPLE)
+    SET_INDICATORS(HSV_PURPLE)
 );
 
 const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
+    layer_base_lights,
     layer_lower_lights,
     layer_raise_lights,
     layer_adjust_lights,
     layer_numpad_lights
 );
 layer_state_t layer_state_set_user(layer_state_t state) {
-    rgblight_set_layer_state(0, layer_state_cmp(state,_LOWER));
-    rgblight_set_layer_state(1, layer_state_cmp(state,_RAISE));
-    rgblight_set_layer_state(2, layer_state_cmp(state,_ADJUST));
-    rgblight_set_layer_state(3, layer_state_cmp(state,_NUMPAD));
+    rgblight_set_layer_state(0, layer_state_cmp(state,_QWERTY));
+    rgblight_set_layer_state(1, layer_state_cmp(state,_LOWER));
+    rgblight_set_layer_state(2, layer_state_cmp(state,_RAISE));
+    rgblight_set_layer_state(3, layer_state_cmp(state,_ADJUST));
+    rgblight_set_layer_state(4, layer_state_cmp(state,_NUMPAD));
     return state;
 }
 void keyboard_post_init_user(void) {
@@ -222,43 +220,61 @@ void keyboard_post_init_user(void) {
 
 #ifdef OLED_DRIVER_ENABLE
 
-static void render_logo(void) {
-    static const char PROGMEM qmk_logo[] = {
-        0x80, 0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87, 0x88, 0x89, 0x8A, 0x8B, 0x8C, 0x8D, 0x8E, 0x8F, 0x90, 0x91, 0x92, 0x93, 0x94,
-        0xA0, 0xA1, 0xA2, 0xA3, 0xA4, 0xA5, 0xA6, 0xA7, 0xA8, 0xA9, 0xAA, 0xAB, 0xAC, 0xAD, 0xAE, 0xAF, 0xB0, 0xB1, 0xB2, 0xB3, 0xB4,
-        0xC0, 0xC1, 0xC2, 0xC3, 0xC4, 0xC5, 0xC6, 0xC7, 0xC8, 0xC9, 0xCA, 0xCB, 0xCC, 0xCD, 0xCE, 0xCF, 0xD0, 0xD1, 0xD2, 0xD3, 0xD4, 0x00
-    };
-
-    oled_write_P(qmk_logo, false);
-}
+char wpm_str[10];
 
 static void print_status_narrow(void) {
-    // Print current mode
     oled_write_P(PSTR("\n\n"), false);
     oled_write_ln_P(PSTR("Minus\nMario"), false);
-    oled_write_ln_P(PSTR(""), false);
-    oled_write_P(PSTR("\n\n"), false);
     // Print current layer
     oled_write_ln_P(PSTR("LAYER"), false);
     switch (get_highest_layer(layer_state)) {
         case _QWERTY:
-            oled_write_P(PSTR("Base\n"), false);
+            oled_write_ln_P(PSTR("BASE"), false);
             break;
         case _RAISE:
-            oled_write_P(PSTR("Raise"), false);
+            oled_write_ln_P(PSTR("RAIS"), false);
             break;
         case _LOWER:
-            oled_write_P(PSTR("Lower"), false);
+            oled_write_ln_P(PSTR("LOWE"), false);
             break;
         case _ADJUST:
-            oled_write_P(PSTR("Adj\n"), false);
+            oled_write_ln_P(PSTR("ADJ"), false);
             break;
         case _NUMPAD:
-            oled_write_P(PSTR("Nump\n"), false);
+            oled_write_ln_P(PSTR("NUMP"), false);
             break;
         default:
-            oled_write_ln_P(PSTR("Undef"), false);
+            oled_write_ln_P(PSTR("UNDEF"), false);
     }
+    oled_write_P(PSTR("\n"), false);
+    led_t led_state = host_keyboard_led_state();
+    if (led_state.num_lock) {
+        oled_write_ln_P(PSTR("NUM"), false);
+    } else {
+        oled_write_P(PSTR("\n"), false);
+    }
+    if (led_state.caps_lock) {
+        oled_write_ln_P(PSTR("CAPS"), false);
+    } else {
+        oled_write_P(PSTR("\n"), false);
+    }
+    if (led_state.scroll_lock) {
+        oled_write_ln_P(PSTR("SCRL"), false);
+    } else {
+        oled_write_P(PSTR("\n"), false);
+    }
+}
+
+static void render_logo(void) {
+    static const char PROGMEM raw_logo[] = {
+        255,255,255,255,255,255,255,255,255,127, 63, 63, 15,  7,135,195,225,241,241,241,241,193,129,195,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255, 47,  7,  3,131,199,255,255,255, 63, 31, 11,129,193,225,243,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255, 63,  7,  1,  0, 48, 12, 
+        3,129,224,248,252,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,  7,  1,  0,240,252,254,254,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255, 31, 15, 15, 31,207,135,131,193,241,241,241,241,113,  1,  1,  1,  3,  3,  1,224,248,254,255,255, 63,  7,  3,193,240,248,254,255,255,255,255,255,255, 63, 15,  7,131,225,241,193,129,  3, 15,  7,  7,  7,195,241,240,248,248,248,248,248,  0,  0,  1,  1,  0, 
+        0,192,224,248,252,255,255,255,255,255,255, 31, 15, 15,143,143,199,199,199,199,199,199,199,199,143, 15, 31, 63, 63,127,255,255,255,255,255,255,255,255,192,128,128,143, 15, 31, 31, 31, 31, 15,143,143,143,143,135,199,195,227,227,227,195,227,255,255,255,255,255,224,192,128,143,143,143,143,135,131,193,241,240,248,252,158,  0,  0,  0, 31,191,255, 15,  1,  0, 96,252,254,255,255,255,255,255,255,255,255,255,131,  0,  0, 24, 15,143,143,135,193,192,128,128,  0, 
+        0,143,143,143,135,199,195,227,241,241,248,192,128,128,143, 15, 31, 63, 63, 63,127,255,255,255,  7,  0,  0,248,255,255,255,255,255,255,127,127,127, 63, 31, 31, 
+        
+        5,255,255,255,255,255,
+    };
+    oled_write_raw_P(raw_logo, sizeof(raw_logo));
 }
 
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
@@ -328,25 +344,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 bool encoder_update_user(uint8_t index, bool clockwise) {
     if (index == 0) {
-        if (clockwise) {
-            tap_code(KC_WH_R);
-        } else {
-            tap_code(KC_WH_L);
-        }
-    } else if (index == 1) {
         switch (get_highest_layer(layer_state)) {
-            case _QWERTY:
-                if (clockwise) {
-                    tap_code(KC_WH_U);
-                    tap_code(KC_WH_U);
-                    tap_code(KC_WH_U);
-                } else {
-                    tap_code(KC_WH_D);
-                    tap_code(KC_WH_D);
-                    tap_code(KC_WH_D);
-                }
-                break;
-            case _LOWER:
+            case _RAISE:
                 if (clockwise) {
                     SEND_STRING("gt");
                 } else {
@@ -355,18 +354,46 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
                 break;
             default:
                 if (clockwise) {
-                    tap_code(KC_WH_U);
-                    tap_code(KC_WH_U);
-                    tap_code(KC_WH_U);
+                    tap_code(KC_WH_R);
                 } else {
-                    tap_code(KC_WH_D);
-                    tap_code(KC_WH_D);
-                    tap_code(KC_WH_D);
+                    tap_code(KC_WH_L);
+                }
+                break;
+        }
+    } else if (index == 1) {
+        switch (get_highest_layer(layer_state)) {
+            case _LOWER:
+                if (clockwise) {
+                    tap_code(KC_PGDOWN);
+                } else {
+                    tap_code(KC_PGUP);
+                }
+                break;
+            default:
+                if (!is_alt_tab_active) {
+                    is_alt_tab_active = true;
+                    register_code(KC_LALT);
+                    tap_code(KC_TAB);
+                }
+                alt_tab_timer = timer_read();
+                if (clockwise) {
+                    tap_code(KC_RIGHT);
+                } else {
+                    tap_code(KC_LEFT);
                 }
                 break;
         }
     }
     return true;
+}
+
+void matrix_scan_user(void) { // The very important timer.
+    if (is_alt_tab_active) {
+        if (timer_elapsed(alt_tab_timer) > 1000) {
+            unregister_code(KC_LALT);
+            is_alt_tab_active = false;
+        }
+    }
 }
 
 #endif
