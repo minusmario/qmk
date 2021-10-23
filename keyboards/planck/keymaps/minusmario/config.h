@@ -1,8 +1,7 @@
 #pragma once
 
 #ifdef AUDIO_ENABLE
-    #define STARTUP_SONG SONG(PLANCK_SOUND)
-    #define GOODBYE_SONG SONG(VIOLIN_SOUND)
+    #define STARTUP_SONG SONG(STARTUP_SOUND)
 #endif
 
 /*

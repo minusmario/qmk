@@ -44,12 +44,14 @@ enum planck_keycodes {
 // Tap-Dance
 enum {
     COMMA_DOT,
-    QUOTE_DQT
+    QUOTE_DQT,
+    MINUS_PLUS
 };
 // Tap Dance definitions
 qk_tap_dance_action_t tap_dance_actions[] = {
     [COMMA_DOT] = ACTION_TAP_DANCE_DOUBLE(KC_COMMA, KC_DOT),
     [QUOTE_DQT] = ACTION_TAP_DANCE_DOUBLE(KC_QUOTE, KC_DQT),
+    [MINUS_PLUS] = ACTION_TAP_DANCE_DOUBLE(KC_MINUS, KC_PLUS)
 };
 
 #define LOWER MO(_LOWER)
@@ -57,8 +59,8 @@ qk_tap_dance_action_t tap_dance_actions[] = {
 #define FN MO(_FN)
 
 #ifdef AUDIO_ENABLE
-float audio_caps_on[][2] = SONG(VIOLIN_SOUND);
-float audio_caps_off[][2] = SONG(GUITAR_SOUND);
+float audio_led_on[][2] = SONG(GAME_ON);
+float audio_led_off[][2] = SONG(GAME_OFF);
 #endif
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -70,31 +72,31 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 
   [_LOWER] = LAYOUT_planck_mit(
-    KC_TILD,KC_EXLM,KC_AT,  KC_HASH,KC_DLR, KC_PERC,KC_CIRC,KC_7,   KC_8,KC_9,         KC_LPRN,      KC_RPRN, \
-    KC_TRNS,KC_F1,  KC_F2,  KC_F3,  KC_F4,  KC_F5,  KC_F6,  KC_4,   KC_5,KC_6,         KC_LBRACKET,  KC_RBRACKET, \
-    KC_TRNS,KC_F7,  KC_F8,  KC_F9,  KC_F10, KC_F11, KC_F12, KC_1,   KC_2,KC_3,         KC_LCBR,      KC_RCBR, \
-    KC_NO,  KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,        KC_TRNS,KC_0,TD(COMMA_DOT),TD(QUOTE_DQT),KC_MINUS
+    KC_TILD,KC_EXLM,KC_AT,  KC_HASH,KC_DLR, KC_PERC,KC_CIRC,KC_7,   KC_8,KC_9,  KC_LPRN,    KC_RPRN, \
+    KC_TRNS,KC_F1,  KC_F2,  KC_F3,  KC_F4,  KC_F5,  KC_F6,  KC_4,   KC_5,KC_6,  KC_LBRACKET,KC_RBRACKET, \
+    KC_TRNS,KC_F7,  KC_F8,  KC_F9,  KC_F10, KC_F11, KC_F12, KC_1,   KC_2,KC_3,  KC_LCBR,    KC_RCBR, \
+    KC_NO,  KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,        KC_TRNS,KC_0,TD(COMMA_DOT),TD(QUOTE_DQT),TD(MINUS_PLUS)
   ),
 
   [_RAISE] = LAYOUT_planck_mit(
-    KC_GRAVE,KC_NLCK,        KC_SLCK,        KC_INSERT, KC_HOME,    KC_PGUP,    KC_PAUSE,  KC_AMPR, KC_ASTR,            KC_UNDS,             KC_PLUS,            KC_PIPE, \
-    KC_TRNS, DYN_MACRO_PLAY1,DYN_MACRO_PLAY2,KC_DELETE, KC_END,     KC_PGDOWN,  KC_LEFT,   KC_DOWN, KC_UP,              KC_RIGHT,            KC_EQUAL,           KC_BSLASH, \
-    KC_TRNS, KC_MS_LEFT,     KC_MS_UP,       KC_MS_DOWN,KC_MS_RIGHT,KC_MS_BTN1, KC_MS_BTN2,KC_MINUS,KC_PSCREEN,         KC_MEDIA_PREV_TRACK, KC_MEDIA_NEXT_TRACK,KC_AUDIO_VOL_UP, \
-    KC_NO,   KC_TRNS,        KC_TRNS,        KC_TRNS,   KC_TRNS,    KC_CAPSLOCK,           KC_TRNS, LCTL(LGUI(KC_LEFT)),LCTL(LGUI(KC_RIGHT)),KC_MEDIA_PLAY_PAUSE,KC_AUDIO_VOL_DOWN
+    KC_GRAVE,KC_PAUSE,           KC_PSCREEN,          KC_INSERT,KC_HOME,KC_PGUP,  LGUI(KC_D),  KC_AMPR, KC_ASTR,            KC_UNDS,             KC_PLUS,     KC_PIPE, \
+    KC_TRNS, LCTL(LGUI(KC_LEFT)),LCTL(LGUI(KC_RIGHT)),KC_DELETE,KC_END, KC_PGDOWN,KC_LEFT,KC_DOWN, KC_UP,              KC_RIGHT,            KC_EQUAL,    KC_BSLASH, \
+    KC_TRNS, KC_NLCK,            KC_CAPS,             KC_SLCK,  KC_NO,  KC_NO,    KC_NO,  KC_MINUS,KC_NO,              KC_MEDIA_PLAY_PAUSE, KC_MUTE,     KC_NO, \
+    KC_NO,   KC_TRNS,            KC_TRNS,             KC_TRNS,  KC_TRNS,    KC_TRNS,      KC_TRNS, KC_MEDIA_PREV_TRACK,KC_AUDIO_VOL_DOWN,KC_AUDIO_VOL_UP,KC_MEDIA_NEXT_TRACK
   ),
 
   [_ADJUST] = LAYOUT_planck_mit(
-    LALT(LCTL(KC_DELETE)),DYN_REC_START1,DYN_REC_START2,KC_NO,  KC_NO,         KC_NO,KC_NO,MARCO_VIM_YANK, KC_NO, KC_NO,KC_NO,KC_NO, \
-    KC_TRNS,              KC_NO,         KC_NO,         KC_NO,  MARCO_VIM_FIND,KC_NO,KC_NO,MARCO_VIM_PASTE,MU_TOG,KC_NO,KC_NO,MAGIC_TOGGLE_NKRO, \
-    KC_TRNS,              KC_NO,         KC_NO,         KC_NO,  KC_NO,         KC_NO,KC_NO,KC_NO,          MU_MOD,KC_NO,KC_NO,RESET, \
-    DYN_REC_STOP,         KC_TRNS,       KC_TRNS,       KC_TRNS,KC_TRNS,       KC_NO,      KC_TRNS,        KC_NO, KC_NO,KC_NO,KC_NO
+    LALT(LCTL(KC_DELETE)),DYN_REC_START1, DYN_REC_START2, KC_NO,  KC_NO,         KC_NO,ALT_TAB,MARCO_VIM_YANK, KC_NO, MU_ON,MU_OFF,KC_NO,             \
+    KC_TRNS,              DYN_MACRO_PLAY1,DYN_MACRO_PLAY2,KC_NO,  MARCO_VIM_FIND,KC_NO,KC_NO,  MARCO_VIM_PASTE,MU_MOD,AU_ON,AU_OFF,MAGIC_TOGGLE_NKRO, \
+    KC_TRNS,              KC_NO,          KC_NO,          KC_NO,  KC_NO,         KC_NO,KC_NO,  KC_NO,          KC_NO, KC_NO,KC_NO, RESET, \
+    DYN_REC_STOP,         KC_TRNS,        KC_TRNS,        KC_TRNS,KC_TRNS,       KC_NO,        KC_TRNS,        KC_NO, KC_NO,KC_NO, EEPROM_RESET
   ),
 
   [_FN] = LAYOUT_planck_mit(
-  KC_TRNS,KC_7,   KC_8, KC_9,   KC_LPRN, KC_RPRN,KC_PLUS,           KC_MINUS,KC_ASTR,KC_SLASH,      KC_NO,  KC_NO,\
-  KC_TRNS,KC_4,   KC_5, KC_6,   KC_QUOTE,KC_DQT, MARCO_VIM_PREVIOUS,KC_NO,   KC_NO,  MARCO_VIM_NEXT,KC_NO,  KC_NO,\
-  KC_TRNS,KC_1,   KC_2, KC_3,   KC_COMMA,KC_DOT, KC_LT,             KC_GT,   KC_NO,  KC_NO,         KC_NO,  KC_NO,\
-  KC_TRNS,KC_TRNS,KC_0, KC_TRNS,KC_NO,   KC_SPACE,                  KC_NO,   KC_TRNS,KC_TRNS,       KC_TRNS,KC_TRNS
+    KC_TRNS,KC_7,   KC_8, KC_9,   KC_LPRN, KC_RPRN,KC_PLUS,           KC_MINUS,KC_ASTR,KC_SLASH,      KC_NO,  KC_TRNS,\
+    KC_TRNS,KC_4,   KC_5, KC_6,   KC_QUOTE,KC_DQT, MARCO_VIM_PREVIOUS,KC_NO,   KC_NO,  MARCO_VIM_NEXT,KC_NO,  KC_NO,  \
+    KC_TRNS,KC_1,   KC_2, KC_3,   KC_COMMA,KC_DOT, KC_LT,             KC_GT,   KC_NO,  KC_NO,         KC_NO,  KC_TRNS,\
+    KC_TRNS,KC_SPACE,KC_0, KC_ENTER,KC_NO,   KC_TRNS,                   KC_NO,   KC_TRNS,KC_TRNS,       KC_TRNS,KC_TRNS
   ),
 };
 
@@ -152,45 +154,6 @@ uint16_t muse_counter = 0;
 uint8_t muse_offset = 70;
 uint16_t muse_tempo = 50;
 
-bool encoder_update(bool clockwise) {
-  if (muse_mode) {
-    if (IS_LAYER_ON(_RAISE)) {
-      if (clockwise) {
-        muse_offset++;
-      } else {
-        muse_offset--;
-      }
-    } else {
-      if (clockwise) {
-        muse_tempo+=1;
-      } else {
-        muse_tempo-=1;
-      }
-    }
-  } else {
-    if (clockwise) {
-      #ifdef MOUSEKEY_ENABLE
-        tap_code(KC_MS_WH_DOWN);
-      #else
-        tap_code(KC_PGDN);
-      #endif
-    } else {
-      #ifdef MOUSEKEY_ENABLE
-        tap_code(KC_MS_WH_UP);
-      #else
-        tap_code(KC_PGUP);
-      #endif
-    }
-  }
-  return true;
-}
-
-/*#ifdef AUDIO_ENABLE
-float lead_start[][2] = SONG(MARIO_THEME);
-float lead_succeed[][2] = SONG(LEAD_SUCCESS);
-float lead_fail[][2] = SONG(LEAD_FAIL);
-#endif
-LEADER_EXTERNS();*/
 void matrix_scan_user(void) {
 #ifdef AUDIO_ENABLE
     if (muse_mode) {
@@ -216,34 +179,6 @@ void matrix_scan_user(void) {
       is_alt_tab_active = false;
     }
   }
-  /*LEADER_DICTIONARY() {
-    did_leader_succeed = leading = false;
-
-    SEQ_ONE_KEY(KC_H) {
-      SEND_STRING("gT");
-      did_leader_succeed = true;
-    }
-    SEQ_ONE_KEY(KC_L) {
-      SEND_STRING("gt");
-      did_leader_succeed = true;
-    }
-    SEQ_ONE_KEY(KC_BSPACE) {
-      register_code(KC_NUMLOCK);
-      unregister_code(KC_NUMLOCK);
-      did_leader_succeed = true;
-    }
-    SEQ_TWO_KEYS(KC_BSPACE, KC_BSPACE) {
-      register_code(KC_CAPSLOCK);
-      unregister_code(KC_CAPSLOCK);
-      did_leader_succeed = true;
-    }
-    SEQ_THREE_KEYS(KC_BSPACE, KC_BSPACE, KC_BSPACE) {
-      register_code(KC_SCROLLLOCK);
-      unregister_code(KC_SCROLLLOCK);
-      did_leader_succeed = true;
-    }
-    leader_end();
-  }*/
 }
 
 bool music_mask_user(uint16_t keycode) {
@@ -256,30 +191,22 @@ bool music_mask_user(uint16_t keycode) {
   }
 }
 
-/*void leader_start(void) {
-#ifdef AUDIO_ENABLE
-    PLAY_SONG(lead_start);
-#endif
-}
-
-void leader_end(void) {
-if (did_leader_succeed) {
-#ifdef AUDIO_ENABLE
-    PLAY_SONG(lead_succeed);
-#endif
-  } else {
-#ifdef AUDIO_ENABLE
-    PLAY_SONG(lead_fail);
-#endif
-  }
-}*/
-
 bool led_update_user(led_t led_state) {
     #ifdef AUDIO_ENABLE
+    static uint8_t num_state = 0;
     static uint8_t caps_state = 0;
+    static uint8_t scroll_state = 0;
+    if (num_state != led_state.num_lock) {
+        led_state.num_lock ? PLAY_SONG(audio_led_on) : PLAY_SONG(audio_led_off);
+        num_state = led_state.num_lock;
+    }
     if (caps_state != led_state.caps_lock) {
-        led_state.caps_lock ? PLAY_SONG(audio_caps_on) : PLAY_SONG(audio_caps_off);
+        led_state.caps_lock ? PLAY_SONG(audio_led_on) : PLAY_SONG(audio_led_off);
         caps_state = led_state.caps_lock;
+    }
+    if (scroll_state != led_state.scroll_lock) {
+        led_state.scroll_lock ? PLAY_SONG(audio_led_on) : PLAY_SONG(audio_led_off);
+        scroll_state = led_state.scroll_lock;
     }
     #endif
     return true;
