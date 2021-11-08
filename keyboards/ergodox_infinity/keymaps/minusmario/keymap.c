@@ -160,51 +160,79 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
     return true;
 }
  void st7565_task_user(void) {
-    if (is_keyboard_master()) {
-        switch (get_highest_layer(layer_state)) {
-            case _BASE:
-                st7565_write_P(PSTR("BASE LAYER\n"), false);
-                ergodox_infinity_lcd_color(UINT16_MAX / 2, UINT16_MAX / 2, UINT16_MAX / 2);
-                break;
-            case _LOWER:
-                st7565_write_P(PSTR("LOWER LAYER\n"), false);
-                ergodox_infinity_lcd_color(UINT16_MAX / 2, 0, 0);
-                break;
-            case _RAISE:
-                st7565_write_P(PSTR("RAISE LAYER\n"), false);
-                ergodox_infinity_lcd_color(UINT16_MAX / 2, UINT16_MAX / 2, 0);
-                break;
-            case _ADJUST:
-                st7565_write_P(PSTR("ADJUST LAYER\n"), false);
-                ergodox_infinity_lcd_color(0, 0, UINT16_MAX / 2);
-                break;
-            case _NUMPAD:
-                st7565_write_P(PSTR("NUMBERPAD LAYER\n"), false);
-                ergodox_infinity_lcd_color(0, UINT16_MAX / 2, 0);
-                break;
-            default:
-                st7565_write_ln_P(PSTR("Oops Undefined"), false);
-                ergodox_infinity_lcd_color(UINT16_MAX / 2, UINT16_MAX / 2, UINT16_MAX / 2);
-            }
-        led_t leds = host_keyboard_led_state();
-        if(leds.num_lock) { st7565_write("Num ", false); }
-        if(leds.caps_lock) { st7565_write("Caps ", false); }
-        if(leds.scroll_lock) { st7565_write("Scroll ", false); }
-        if(leds.compose) { st7565_write("Com ", false); }
-        if(leds.kana) { st7565_write("Kana", false); }
-        st7565_advance_page(true);
-    } else {
-        // Draw logo
-        static const char qmk_logo[] = {
-            0x80, 0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87, 0x88, 0x89, 0x8A, 0x8B, 0x8C, 0x8D, 0x8E, 0x8F, 0x90, 0x91, 0x92, 0x93, 0x94,
-            0xA0, 0xA1, 0xA2, 0xA3, 0xA4, 0xA5, 0xA6, 0xA7, 0xA8, 0xA9, 0xAA, 0xAB, 0xAC, 0xAD, 0xAE, 0xAF, 0xB0, 0xB1, 0xB2, 0xB3, 0xB4,
-            0xC0, 0xC1, 0xC2, 0xC3, 0xC4, 0xC5, 0xC6, 0xC7, 0xC8, 0xC9, 0xCA, 0xCB, 0xCC, 0xCD, 0xCE, 0xCF, 0xD0, 0xD1, 0xD2, 0xD3, 0xD4, 0x00
-        };
-
-        st7565_write(qmk_logo, false);
-        st7565_write("  Infinity  Ergodox  ", false);
-    }
-}
+     if (!st7565_is_on()) {
+         return;
+     }
+     if (is_keyboard_master()) {
+         switch (get_highest_layer(layer_state)) {
+             case _BASE:
+                 st7565_write_P(PSTR("BASE LAYER\n"), false);
+                 ergodox_infinity_lcd_color(UINT16_MAX / 2, UINT16_MAX / 2, UINT16_MAX / 2);
+                 break;
+             case _LOWER:
+                 st7565_write_P(PSTR("LOWER LAYER\n"), false);
+                 ergodox_infinity_lcd_color(UINT16_MAX / 2, 0, 0);
+                 break;
+             case _RAISE:
+                 st7565_write_P(PSTR("RAISE LAYER\n"), false);
+                 ergodox_infinity_lcd_color(UINT16_MAX / 2, UINT16_MAX / 2, 0);
+                 break;
+             case _ADJUST:
+                 st7565_write_P(PSTR("ADJUST LAYER\n"), false);
+                 ergodox_infinity_lcd_color(0, 0, UINT16_MAX / 2);
+                 break;
+             case _NUMPAD:
+                 st7565_write_P(PSTR("NUMBERPAD LAYER\n"), false);
+                 ergodox_infinity_lcd_color(0, UINT16_MAX / 2, 0);
+                 break;
+             default:
+                 st7565_write_ln_P(PSTR("Oops Undefined"), false);
+                 ergodox_infinity_lcd_color(UINT16_MAX / 2, UINT16_MAX / 2, UINT16_MAX / 2);
+         }
+         led_t leds = host_keyboard_led_state();
+         if (leds.num_lock) {
+             st7565_write("Num ", false);
+         }
+         if (leds.caps_lock) {
+             st7565_write("Caps ", false);
+         }
+         if (leds.scroll_lock) {
+             st7565_write("Scroll ", false);
+         }
+         if (leds.compose) {
+             st7565_write("Com ", false);
+         }
+         if (leds.kana) {
+             st7565_write("Kana", false);
+         }
+         st7565_advance_page(true);
+     } else {
+         // Draw logo
+         static const char qmk_logo[] = {0x80, 0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87, 0x88, 0x89, 0x8A, 0x8B, 0x8C, 0x8D, 0x8E, 0x8F, 0x90, 0x91, 0x92, 0x93, 0x94, 0xA0, 0xA1, 0xA2, 0xA3, 0xA4, 0xA5, 0xA6, 0xA7, 0xA8, 0xA9, 0xAA, 0xAB, 0xAC, 0xAD, 0xAE, 0xAF, 0xB0, 0xB1, 0xB2, 0xB3, 0xB4, 0xC0, 0xC1, 0xC2, 0xC3, 0xC4, 0xC5, 0xC6, 0xC7, 0xC8, 0xC9, 0xCA, 0xCB, 0xCC, 0xCD, 0xCE, 0xCF, 0xD0, 0xD1, 0xD2, 0xD3, 0xD4, 0x00};
+         st7565_write(qmk_logo, false);
+         st7565_write("  Infinity  Ergodox  ", false);
+         switch (get_highest_layer(layer_state)) {
+             case _BASE:
+                 ergodox_infinity_lcd_color(UINT16_MAX / 2, UINT16_MAX / 2, UINT16_MAX / 2);
+                 break;
+             case _LOWER:
+                 ergodox_infinity_lcd_color(UINT16_MAX / 2, 0, 0);
+                 break;
+             case _RAISE:
+                 ergodox_infinity_lcd_color(UINT16_MAX / 2, UINT16_MAX / 2, 0);
+                 break;
+             case _ADJUST:
+                 ergodox_infinity_lcd_color(0, 0, UINT16_MAX / 2);
+                 break;
+             case _NUMPAD:
+                 ergodox_infinity_lcd_color(0, UINT16_MAX / 2, 0);
+                 break;
+             default:
+                 st7565_write_ln_P(PSTR("Oops Undefined"), false);
+                 ergodox_infinity_lcd_color(UINT16_MAX / 2, UINT16_MAX / 2, UINT16_MAX / 2);
+         }
+     }
+ }
 /* void matrix_scan_user(void) {
     ergodox_board_led_off();
     ergodox_right_led_1_off();
