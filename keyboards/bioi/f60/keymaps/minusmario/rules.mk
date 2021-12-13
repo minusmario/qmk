@@ -1,0 +1,10 @@
+BOOTMAGIC_ENABLE = yes      # Enable Bootmagic Lite
+DYNAMIC_MACRO_ENABLE = yes
+TAP_DANCE_ENABLE = yes
+MOUSEKEY_ENABLE = no      # Mouse keys
+RGBLIGHT_ENABLE = no        # Enable WS2812 RGB underlight.
+DIP_SWITCH_ENABLE = no
+NKRO_ENABLE = yes            # Enable N-Key Rollover
+BACKLIGHT_ENABLE = no      # Enable keyboard backlight functionality
+RGBLIGHT_ENABLE = no       # Enable keyboard RGB underglow
+LTO_ENABLE = yes
