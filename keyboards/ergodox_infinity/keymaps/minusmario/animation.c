@@ -1,3 +1,58 @@
+/********animation related start********/
+// Images credit j-inc(/James Incandenza) and pixelbenny. Credit to obosob for initial animation approach.
+static void render_anim(uint8_t wpm) {
+    // assumes 1 frame prep stage
+    void animation_phase(void) {
+        if (wpm <= IDLE_SPEED) {
+            current_idle_frame = (current_idle_frame + 1) % IDLE_FRAMES;
+            st7565_write_raw_P(idle[abs((IDLE_FRAMES - 1) - current_idle_frame)], ANIM_SIZE);
+        }
+        if (wpm > IDLE_SPEED && wpm < TAP_SPEED) {
+            // oled_write_raw_P(prep[abs((PREP_FRAMES-1)-current_prep_frame)], ANIM_SIZE); // uncomment if IDLE_FRAMES >1
+            st7565_write_raw_P(prep[0], ANIM_SIZE);  // remove if IDLE_FRAMES >1
+        }
+        if (wpm >= TAP_SPEED) {
+            current_tap_frame = (current_tap_frame + 1) % TAP_FRAMES;
+            st7565_write_raw_P(tap[abs((TAP_FRAMES - 1) - current_tap_frame)], ANIM_SIZE);
+        }
+    }
+    if (wpm != 000) {
+        // st7565_on(); // not essential but turns on animation OLED with any alpha keypress
+        if (timer_elapsed32(anim_timer) > ANIM_FRAME_DURATION) {
+            anim_timer = timer_read32();
+            animation_phase();
+        }
+        anim_sleep = timer_read32();
+    } else {
+        if (timer_elapsed32(anim_sleep) > ST7565_TIMEOUT) {
+            // st7565_off();
+        } else {
+            if (timer_elapsed32(anim_timer) > ANIM_FRAME_DURATION) {
+                anim_timer = timer_read32();
+                animation_phase();
+            }
+        }
+    }
+}
+/********animation related end********/
+/********animation related start********/
+char wpm_str[13];
+// WPM-responsive animation stuff here
+#define IDLE_SPEED 40  // below this wpm value your animation will idle
+
+// #define PREP_FRAMES 1 // uncomment if >1
+
+#define TAP_SPEED 60  // above this wpm value typing animation to triggere
+
+#define ANIM_FRAME_DURATION 200  // how long each frame lasts in ms
+// #define SLEEP_TIMER 60000 // should sleep after this period of 0 wpm, needs fixing
+
+uint32_t anim_timer         = 0;
+uint32_t anim_sleep         = 0;
+uint8_t  current_idle_frame = 0;
+// uint8_t current_prep_frame = 0; // uncomment if PREP_FRAMES >1
+uint8_t current_tap_frame = 0;
+/********animation related end********/
 #define IDLE_FRAMES 5
 #define ANIM_SIZE 512 // number of bytes in array, minimize for adequate firmware size, max is 1024
 #define TAP_FRAMES 2

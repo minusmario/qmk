@@ -6,4 +6,4 @@ MOUSEKEY_ENABLE = no
 # LTO_ENABLE = yes
 BOOTMAGIC_ENABLE = yes
 
-WPM_ENABLE = yes
+# WPM_ENABLE = yes
