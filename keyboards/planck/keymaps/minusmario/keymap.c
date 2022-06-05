@@ -79,24 +79,24 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 
   [_RAISE] = LAYOUT_planck_mit(
-    KC_GRAVE,KC_PAUSE,           KC_PSCREEN,          KC_INSERT,KC_HOME,KC_PGUP,  LGUI(KC_D),  KC_AMPR, KC_ASTR,            KC_UNDS,             KC_PLUS,     KC_PIPE, \
-    KC_TRNS, LCTL(LGUI(KC_LEFT)),LCTL(LGUI(KC_RIGHT)),KC_DELETE,KC_END, KC_PGDOWN,KC_LEFT,KC_DOWN, KC_UP,              KC_RIGHT,            KC_EQUAL,    KC_BSLASH, \
-    KC_TRNS, KC_NLCK,            KC_CAPS,             KC_SLCK,  KC_NO,  KC_NO,    KC_NO,  KC_MINUS,KC_NO,              KC_MEDIA_PLAY_PAUSE, KC_MUTE,     KC_NO, \
-    KC_NO,   KC_TRNS,            KC_TRNS,             KC_TRNS,  KC_TRNS,    KC_TRNS,      KC_TRNS, KC_MEDIA_PREV_TRACK,KC_AUDIO_VOL_DOWN,KC_AUDIO_VOL_UP,KC_MEDIA_NEXT_TRACK
+    KC_GRAVE,KC_PAUSE,           KC_PSCREEN,          KC_INSERT,KC_HOME,KC_PGUP,  LGUI(KC_D),KC_AMPR, KC_ASTR,            KC_UNDS,             KC_PLUS,        KC_PIPE, \
+    KC_TRNS, LCTL(LGUI(KC_LEFT)),LCTL(LGUI(KC_RIGHT)),KC_DELETE,KC_END, KC_PGDOWN,KC_LEFT,   KC_DOWN, KC_UP,              KC_RIGHT,            KC_EQUAL,       KC_BSLASH, \
+    KC_TRNS, KC_NLCK,            KC_CAPS,             KC_SLCK,  KC_NO,  KC_NO,    KC_NO,     KC_MINUS,KC_NO,              KC_MEDIA_PLAY_PAUSE, KC_MUTE,        KC_NO, \
+    KC_NO,   KC_TRNS,            KC_TRNS,             KC_TRNS,  KC_TRNS,    KC_TRNS,         KC_TRNS, KC_MEDIA_PREV_TRACK,KC_AUDIO_VOL_DOWN,   KC_AUDIO_VOL_UP,KC_MEDIA_NEXT_TRACK
   ),
 
   [_ADJUST] = LAYOUT_planck_mit(
-    LALT(LCTL(KC_DELETE)),DYN_REC_START1, DYN_REC_START2, KC_NO,  KC_NO,         KC_NO,ALT_TAB,MARCO_VIM_YANK, KC_NO, MU_ON,MU_OFF,KC_NO,             \
-    KC_TRNS,              DYN_MACRO_PLAY1,DYN_MACRO_PLAY2,KC_NO,  MARCO_VIM_FIND,KC_NO,KC_NO,  MARCO_VIM_PASTE,MU_MOD,AU_ON,AU_OFF,MAGIC_TOGGLE_NKRO, \
-    KC_TRNS,              KC_NO,          KC_NO,          KC_NO,  KC_NO,         KC_NO,KC_NO,  KC_NO,          KC_NO, KC_NO,KC_NO, RESET, \
-    DYN_REC_STOP,         KC_TRNS,        KC_TRNS,        KC_TRNS,KC_TRNS,       KC_NO,        KC_TRNS,        KC_NO, KC_NO,KC_NO, EEPROM_RESET
+    LALT(LCTL(KC_DELETE)),DYN_REC_START1, DYN_REC_START2, KC_NO,  KC_NO,         KC_NO,ALT_TAB,KC_NO,  KC_NO, MU_ON,MU_OFF,KC_NO,             \
+    KC_TRNS,              DYN_MACRO_PLAY1,DYN_MACRO_PLAY2,KC_NO,  MARCO_VIM_FIND,KC_NO,KC_NO,  KC_NO,  MU_MOD,AU_ON,AU_OFF,MAGIC_TOGGLE_NKRO, \
+    KC_TRNS,              KC_NO,          KC_NO,          KC_NO,  KC_NO,         KC_NO,KC_NO,  KC_NO,  KC_NO, KC_NO,KC_NO, RESET, \
+    DYN_REC_STOP,         KC_TRNS,        KC_TRNS,        KC_TRNS,KC_TRNS,       KC_NO,        KC_TRNS,KC_NO, KC_NO,KC_NO, EEPROM_RESET
   ),
 
   [_FN] = LAYOUT_planck_mit(
-    KC_TRNS,KC_7,   KC_8, KC_9,   KC_LPRN, KC_RPRN,KC_PLUS,           KC_MINUS,KC_ASTR,KC_SLASH,      KC_NO,  KC_TRNS,\
-    KC_TRNS,KC_4,   KC_5, KC_6,   KC_QUOTE,KC_DQT, MARCO_VIM_PREVIOUS,KC_NO,   KC_NO,  MARCO_VIM_NEXT,KC_NO,  KC_NO,  \
-    KC_TRNS,KC_1,   KC_2, KC_3,   KC_COMMA,KC_DOT, KC_LT,             KC_GT,   KC_NO,  KC_NO,         KC_NO,  KC_TRNS,\
-    KC_TRNS,KC_SPACE,KC_0, KC_ENTER,KC_NO,   KC_TRNS,                   KC_NO,   KC_TRNS,KC_TRNS,       KC_TRNS,KC_TRNS
+    KC_7,   KC_8,KC_9, KC_PLUS, KC_LPRN,       KC_LPRN,MARCO_VIM_YANK,    KC_NO,KC_NO,  KC_NO,         MARCO_VIM_PASTE,KC_BSPACE,\
+    KC_4,   KC_5,KC_6, KC_MINUS,KC_DOT,        KC_RPRN,MARCO_VIM_PREVIOUS,KC_NO,KC_NO,  MARCO_VIM_NEXT,KC_NO,          KC_NO,  \
+    KC_1,   KC_2,KC_3, KC_ASTR, KC_QUOTE,      KC_NO,  KC_NO,             KC_NO,KC_NO,  KC_NO,         KC_NO,          KC_ENTER,\
+    KC_TRNS,KC_0,KC_NO,KC_SLASH,LSFT(KC_QUOTE),   KC_SPACE,               KC_NO,KC_LEFT,KC_DOWN,       KC_UP,          KC_RIGHT
   ),
 };
 
