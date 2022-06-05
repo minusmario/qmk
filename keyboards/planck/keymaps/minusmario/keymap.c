@@ -89,11 +89,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     LALT(LCTL(KC_DELETE)),DYN_REC_START1, DYN_REC_START2, KC_NO,  KC_NO,         KC_NO,ALT_TAB,KC_NO,  KC_NO, MU_ON,MU_OFF,KC_NO,             \
     KC_TRNS,              DYN_MACRO_PLAY1,DYN_MACRO_PLAY2,KC_NO,  MARCO_VIM_FIND,KC_NO,KC_NO,  KC_NO,  MU_MOD,AU_ON,AU_OFF,MAGIC_TOGGLE_NKRO, \
     KC_TRNS,              KC_NO,          KC_NO,          KC_NO,  KC_NO,         KC_NO,KC_NO,  KC_NO,  KC_NO, KC_NO,KC_NO, RESET, \
-    DYN_REC_STOP,         KC_TRNS,        KC_TRNS,        KC_TRNS,KC_TRNS,       KC_NO,        KC_TRNS,KC_NO, KC_NO,KC_NO, EEPROM_RESET
+    DYN_REC_STOP,         KC_TRNS,        KC_TRNS,        KC_TRNS,KC_TRNS,          KC_NO,     KC_TRNS,KC_NO, KC_NO,KC_NO, EEPROM_RESET
   ),
 
   [_FN] = LAYOUT_planck_mit(
-    KC_7,   KC_8,KC_9, KC_PLUS, KC_LPRN,       KC_LPRN,MARCO_VIM_YANK,    KC_NO,KC_NO,  KC_NO,         MARCO_VIM_PASTE,KC_BSPACE,\
+    KC_7,   KC_8,KC_9, KC_PLUS, KC_COMMA,      KC_LPRN,MARCO_VIM_YANK,    KC_NO,KC_NO,  KC_NO,         MARCO_VIM_PASTE,KC_BSPACE,\
     KC_4,   KC_5,KC_6, KC_MINUS,KC_DOT,        KC_RPRN,MARCO_VIM_PREVIOUS,KC_NO,KC_NO,  MARCO_VIM_NEXT,KC_NO,          KC_NO,  \
     KC_1,   KC_2,KC_3, KC_ASTR, KC_QUOTE,      KC_NO,  KC_NO,             KC_NO,KC_NO,  KC_NO,         KC_NO,          KC_ENTER,\
     KC_TRNS,KC_0,KC_NO,KC_SLASH,LSFT(KC_QUOTE),   KC_SPACE,               KC_NO,KC_LEFT,KC_DOWN,       KC_UP,          KC_RIGHT
