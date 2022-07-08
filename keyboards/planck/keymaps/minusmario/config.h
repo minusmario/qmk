@@ -45,3 +45,6 @@
 #define LEADER_TIMEOUT 500 
 #define LEADER_PER_KEY_TIMING
 #define USB_POLLING_INTERVAL_MS 1
+/* fix no startup song according to: https://www.reddit.com/r/olkb/comments/r6cfvn/help_startup_planck_song_gone_after_qmk_flash/ */
+#define AUDIO_INIT_DELAY
+// #define USB_SUSPEND_WAKEUP_DELAY 200
